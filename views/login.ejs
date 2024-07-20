@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expenses</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .expenses-container {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 28px;
+            border-radius: 2px;
+            border-width: 1px;
+            border-color: aqua;
+        }
+        .add-expenses-container {
+            background-color: #f8f9fa;
+            padding: 8px;
+            margin-bottom: 18px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="expenses-container">
+        <h4>Add Expenses</h4>
+    </div>
+        <form>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <label for="date"><b>Date</b></label>
+                </div>
+                <div class="col-auto">
+                    <input type="date" class="form-control" id="date" required>
+                </div>
+            </div>
+            <div class="form-row align-items-center mt-3">
+                <div class="col-auto">
+                    <label for="account"><b>Account</b></label>
+                </div>
+                <div class="col-auto">
+                    <select class="form-control" id="account" required>
+                        <option>Bank Account</option>
+                        <option>Credit Card</option>
+                        <option>Cash</option>
+                    </select>
+                </div>
+                
+            </div>
+            </div>
+            <div class="container mt-3">
+                <div class="add-expenses-container">
+                <h4>Expenses</h4>
+            </div>
+            <div id="expenses">
+                <div class="form-row align-items-end mb-3 expense-item">
+                    <div class="col">
+                        <label for="category" class="font-weight-bold">Category</label>
+                        <select class="form-control" required>
+                            <option>Clothes</option>
+                            <option>Entertainment</option>
+                            <option>Food</option>
+                            <option>Travel</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="amount" class="font-weight-bold">Amount</label>
+                        <input type="number" class="form-control" required>
+                    </div>
+                    <div class="col">
+                        <label for="bill" class="font-weight-bold">Bill/Image</label>
+                        <input type="file" class="form-control-file">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-danger remove-expense">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-info" id="add-expense">+ Add New</button>
+            </div>
+            <div class="form-group">
+                <label for="total">Total Amount</label>
+                <input type="number" class="form-control" id="total" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-expense').click(function() {
+                let newExpense = $('.expense-item').first().clone();
+                newExpense.find('input').val('');
+                newExpense.find('select').val('');
+                $('#expenses').append(newExpense);
+            });
+
+            $(document).on('click', '.remove-expense', function() {
+                if ($('.expense-item').length > 1) {
+                    $(this).closest('.expense-item').remove();
+                    updateTotal();
+                }
+            });
+
+            $(document).on('input', 'input[type="number"]', function() {
+                updateTotal();
+            });
+
+            function updateTotal() {
+                let total = 0;
+                $('input[type="number"]').each(function() {
+                    let value = parseFloat($(this).val());
+                    if (!isNaN(value)) {
+                        total += value;
+                    }
+                });
+                $('#total').val(total);
+            }
+        });
+    </script>
+</body>
+</html>
